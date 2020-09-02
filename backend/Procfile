@@ -1,0 +1,1 @@
+web: gunicorn kagojer_nouka.wsgi --log-file -
