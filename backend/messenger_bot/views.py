@@ -1,9 +1,8 @@
 import os
 import requests
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from django.http import HttpResponse
+from rest_framework.views import APIView
+from messenger_bot.models import FacebookMessage
 
 
 VERIFY_TOKEN = os.getenv('FACEBOOK_VERIFY_TOKEN')
@@ -13,21 +12,13 @@ FB_API_URL = 'https://graph.facebook.com/v2.6/me/messages'
 
 class MessengerWebhookAPIView(APIView):
     def verify_webhook(self):
-        # print(self.request.query_params.get('hub.verify_token'))
-        # print(self.request.query_params.get('hub.challenge'))
-        # print(VERIFY_TOKEN)
-        # print(PAGE_ACCESS_TOKEN)
-
         if self.request.query_params.get('hub.verify_token') == VERIFY_TOKEN:
             return HttpResponse(self.request.query_params.get('hub.challenge'))
 
-        return Response(
-            data="Incorrect",
-            status=status.HTTP_400_BAD_REQUEST
-        )
+        return HttpResponse("Incorrect verification token")
 
     @staticmethod
-    def send_messages(recipient_id, text):
+    def response_to_message(recipient_id, text):
         auth = {'access_token': PAGE_ACCESS_TOKEN}
         payload = {
             'message': {'text': text},
@@ -45,9 +36,42 @@ class MessengerWebhookAPIView(APIView):
     def get(self, request):
         return self.verify_webhook()
 
-    def post(self):
-        print(self.request.data)
-        return Response(
-            data='OK',
-            status=status.HTTP_200_OK
+    @staticmethod
+    def is_user_message(message):
+        return (message.get('message') and
+                message['message'].get('text') and
+                not message['message'].get("is_echo"))
+
+    @staticmethod
+    def save_message_to_database(sender_id, timestamp, text):
+        message = FacebookMessage(
+            sender_id=sender_id,
+            timestamp=timestamp,
+            message=text
         )
+        message.save()
+
+    def post(self, *args, **kwargs):
+        payload = self.request.data
+        events = payload['entry'][0]['messaging']
+
+        for event in events:
+            if self.is_user_message(event):
+                sender_id = event['sender']['id']
+                timestamp = event['timestamp']
+                text = event['message']['text']
+
+                print(sender_id, timestamp, text)
+
+                self.save_message_to_database(
+                    sender_id=sender_id,
+                    timestamp=timestamp,
+                    text=text
+                )
+
+                self.response_to_message(
+                    recipient_id=sender_id,
+                    text=f'Reply to {text}'
+                )
+
+        return HttpResponse("OK")
