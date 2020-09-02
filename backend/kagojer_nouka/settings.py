@@ -115,6 +115,11 @@ CORS_ALLOWED_ORIGINS = [
     'http://0.0.0.0:5000',
     'http://localhost:5000',
     'http://127.0.0.1:5500',
+    'https://localhost:8080',
+    'https://0.0.0.0:5000',
+    'https://localhost:5000',
+    'https://127.0.0.1:5500',
+
 
     # server
     'https://kagojer-nouka.herokuapp.com',
