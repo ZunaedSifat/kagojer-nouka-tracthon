@@ -18,6 +18,7 @@ To be added
 Push code to heroku server
 ---------------------------
 * For backend server, execute `git subtree push --prefix backend heroku-backend master` from root folder of the repository
+* To force push to backend server, execute `git push heroku-backend `git subtree split --prefix backend master`:master --force`
 
 
 Team Members:
