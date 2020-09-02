@@ -119,7 +119,7 @@ def find_unique_proper_nouns(text):
     return result
 
 
-def process(text):
+def get_keywords(text):
     raw_keywords = generate_summa_keywords(text)
     # print('Summa Generated Keywords: Total:', raw_keywords.__len__(), '\n', raw_keywords)
 
@@ -143,7 +143,7 @@ def process(text):
 
 
 # init_nltk()
-# process(read_file('input.txt'))
+# get_keywords(read_file('input.txt'))
 
 
 # TODO Keyword:
@@ -160,5 +160,4 @@ def process(text):
 # idea: filter out words that have other possible POS e.g: find all possible POS of a word then pick only those words that are pure noun
 
 # TODO Union Both Results:
-# weight of proper nouns = max_weight of keywords * count
-# final result = distinct(top x keywords with non-negligible weight (Union) top x proper nouns)
+# final result = proper nouns UNION keywords
