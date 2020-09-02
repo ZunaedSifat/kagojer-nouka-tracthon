@@ -24,6 +24,7 @@ INSTALLED_APPS = [
 
     # third party libraries
     'rest_framework',
+    'api',
     'corsheaders',
     'oauth2_provider',
     'social_django',
