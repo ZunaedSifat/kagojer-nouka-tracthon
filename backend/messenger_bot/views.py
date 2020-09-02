@@ -3,6 +3,7 @@ import requests
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.http import HttpResponse
 
 
 VERIFY_TOKEN = os.getenv('FACEBOOK_VERIFY_TOKEN')
@@ -12,16 +13,13 @@ FB_API_URL = 'https://graph.facebook.com/v2.6/me/messages'
 
 class MessengerWebhookAPIView(APIView):
     def verify_webhook(self):
-        print(self.request.query_params.get('hub.verify_token'))
-        print(self.request.query_params.get('hub.challenge'))
-        print(VERIFY_TOKEN)
-        print(PAGE_ACCESS_TOKEN)
+        # print(self.request.query_params.get('hub.verify_token'))
+        # print(self.request.query_params.get('hub.challenge'))
+        # print(VERIFY_TOKEN)
+        # print(PAGE_ACCESS_TOKEN)
 
         if self.request.query_params.get('hub.verify_token') == VERIFY_TOKEN:
-            return Response(
-                data=self.request.query_params.get('hub.challenge'),
-                status=status.HTTP_200_OK
-            )
+            return HttpResponse(self.request.query_params.get('hub.challenge'))
 
         return Response(
             data="Incorrect",
