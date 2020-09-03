@@ -29,6 +29,9 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'social_django',
     'rest_framework_social_oauth2',
+
+    # my applications
+    'messenger_bot',
 ]
 
 MIDDLEWARE = [
@@ -113,6 +116,11 @@ CORS_ALLOWED_ORIGINS = [
     'http://0.0.0.0:5000',
     'http://localhost:5000',
     'http://127.0.0.1:5500',
+    'https://localhost:8080',
+    'https://0.0.0.0:5000',
+    'https://localhost:5000',
+    'https://127.0.0.1:5500',
+
 
     # server
     'https://kagojer-nouka.herokuapp.com',
