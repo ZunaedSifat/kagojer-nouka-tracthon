@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'rest_framework_social_oauth2',
 
     # my applications
+    'api',
     'messenger_bot',
 ]
 
