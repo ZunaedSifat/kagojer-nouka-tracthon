@@ -5,6 +5,7 @@ from django.utils import timezone
 from faker import Faker
 from random import choice, uniform
 from api.keyword import get_keywords
+from api import cache
 from itertools import permutations
 
 
@@ -75,33 +76,14 @@ class Cluster(models.Model):
     def __str__(self):
         return f'Cluster: {self.name}'
 
-    @staticmethod
-    def should_create_cluster(keyword_list):
-        if Cluster.does_exist_with_keywords(keyword_list):
-            return False
 
-        queryset = Content.objects.all()
-        for keyword in keyword_list:
-            queryset = queryset.filter(keywords__word=keyword.word)
-
-        return queryset.count() >= MIN_DOCUMENT_COUNT_TO_FORM_A_CLUSTER
-
-    @staticmethod
-    def does_exist_with_keywords(keyword_list):
-        cluster_queryset = Cluster.objects.all()
-        for keyword in keyword_list:
-            cluster_queryset = cluster_queryset.filter(keywords__word=keyword.word)
-        return cluster_queryset.exists()
-
-    @staticmethod
-    def create_from_keywords(keyword_list):
-        cluster = Cluster()
-        cluster.save()
-        for keyword in keyword_list:
-            cluster.keywords.add(keyword)
-        cluster.save()
-
-        return cluster
+def create_cluster_from_keywords(keyword_list):
+    cluster = Cluster()
+    cluster.save()
+    for keyword in keyword_list:
+        cluster.keywords.add(keyword)
+    cluster.save()
+    return cluster
 
 
 @receiver(post_save, sender=Content)
@@ -116,8 +98,11 @@ def my_handler(sender, **kwargs):
             content=content
         ) for word, weight in keywords
     ]
+    for instance in keyword_instances:
+        cache.KeywordCache.get_instance().set(keyword=instance)
 
     for combination in get_combinations(len(keyword_instances), 3):
         keyword_list = [keyword_instances[idx] for idx in combination]
-        if Cluster.should_create_cluster(keyword_list):
-            Cluster.create_from_keywords(keyword_list)
+        if not cache.ClusterCache.get_instance().is_present(keywords=keyword_list) and \
+                cache.KeywordCache.get_instance().count(keyword_list) > MIN_DOCUMENT_COUNT_TO_FORM_A_CLUSTER:
+            cache.ClusterCache.get_instance().create(keywords=keyword_list)
