@@ -3,14 +3,26 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from faker import Faker
-from random import choice, randint, uniform
+from random import choice, uniform
 from api.keyword import get_keywords
+from itertools import permutations
+
 
 faker = Faker('en_US')
 
 
-class Content(models.Model):
+MIN_DOCUMENT_COUNT_TO_FORM_A_CLUSTER = 2
 
+
+def get_combinations(n, r):
+    result = set()
+    for perm in permutations(list(range(n))):
+        result.add(tuple(sorted(perm[:r])))
+
+    return result
+
+
+class Content(models.Model):
     text = models.TextField('text')
     uploader_id = models.BigIntegerField('uploader_id', default=0, blank=True)
     upload_date = models.DateField('upload date')
@@ -32,24 +44,13 @@ class Content(models.Model):
             return cls.generate_fake()
 
 
-@receiver(post_save, sender=Content)
-def my_handler(sender, **kwargs):
-    content = kwargs['instance']
-    keywords = get_keywords(content.text)
-
-    for word, weight in keywords:
-        Keyword.objects.create(
-            word=word,
-            weight=weight,
-            content=content
-        )
-
-
 class Keyword(models.Model):
-
     word = models.CharField('key word', max_length=128)
     content = models.ForeignKey(Content, related_name='keywords', on_delete=models.CASCADE)
     weight = models.DecimalField('unit price', decimal_places=3, max_digits=5)
+
+    def __str__(self):
+        return f'Keyword: {self.word}'
 
     @classmethod
     def generate_fake(cls, cont=None):
@@ -65,3 +66,58 @@ class Keyword(models.Model):
         except IndexError:
             Content.generate_fake()
             return cls.generate_fake(cont)
+
+
+class Cluster(models.Model):
+    name = models.CharField(max_length=100, default='Untitled Cluster')
+    keywords = models.ManyToManyField(to=Keyword, related_name='clusters')
+
+    def __str__(self):
+        return f'Cluster: {self.name}'
+
+    @staticmethod
+    def should_create_cluster(keyword_list):
+        if Cluster.does_exist_with_keywords(keyword_list):
+            return False
+
+        queryset = Content.objects.all()
+        for keyword in keyword_list:
+            queryset = queryset.filter(keywords__word=keyword.word)
+
+        return queryset.count() >= MIN_DOCUMENT_COUNT_TO_FORM_A_CLUSTER
+
+    @staticmethod
+    def does_exist_with_keywords(keyword_list):
+        cluster_queryset = Cluster.objects.all()
+        for keyword in keyword_list:
+            cluster_queryset = cluster_queryset.filter(keywords__word=keyword.word)
+        return cluster_queryset.exists()
+
+    @staticmethod
+    def create_from_keywords(keyword_list):
+        cluster = Cluster()
+        cluster.save()
+        for keyword in keyword_list:
+            cluster.keywords.add(keyword)
+        cluster.save()
+
+        return cluster
+
+
+@receiver(post_save, sender=Content)
+def my_handler(sender, **kwargs):
+    content = kwargs['instance']
+    keywords = get_keywords(content.text)
+
+    keyword_instances = [
+        Keyword.objects.create(
+            word=word,
+            weight=weight,
+            content=content
+        ) for word, weight in keywords
+    ]
+
+    for combination in get_combinations(len(keyword_instances), 3):
+        keyword_list = [keyword_instances[idx] for idx in combination]
+        if Cluster.should_create_cluster(keyword_list):
+            Cluster.create_from_keywords(keyword_list)
