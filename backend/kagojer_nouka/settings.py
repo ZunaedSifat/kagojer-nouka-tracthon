@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = "os.getenv('DJANGO_SECRET_KEY')"
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -24,13 +24,13 @@ INSTALLED_APPS = [
 
     # third party libraries
     'rest_framework',
-    'api',
     'corsheaders',
     'oauth2_provider',
     'social_django',
     'rest_framework_social_oauth2',
 
     # my applications
+    'api',
     'messenger_bot',
 ]
 
