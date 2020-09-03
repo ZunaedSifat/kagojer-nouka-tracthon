@@ -1,5 +1,13 @@
-from django.http import HttpResponse
+from django.db.models import Count
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from api.models import Keyword
 
 
-def index(request):
-    return HttpResponse("Hello, world. We doin' good?")
+@api_view(http_method_names=['GET'])
+def trending_keywords(request):
+
+    keywords = Keyword.objects.values('word').annotate(count=Count('word')).order_by('-count')
+
+    return Response(keywords)
