@@ -1,7 +1,10 @@
 from django.db import models, transaction, IntegrityError
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 from faker import Faker
 from random import choice, randint, uniform
+from api.keyword import get_keywords
 
 faker = Faker('en_US')
 
@@ -26,6 +29,19 @@ class Content(models.Model):
                 )
         except IntegrityError:
             return cls.generate_fake()
+
+
+@receiver(post_save, sender=Content)
+def my_handler(sender, **kwargs):
+    content = kwargs['instance']
+    keywords = get_keywords(content.text)
+
+    for word, weight in keywords:
+        Keyword.objects.create(
+            word=word,
+            weight=weight,
+            content=content
+        )
 
 
 class Keyword(models.Model):
