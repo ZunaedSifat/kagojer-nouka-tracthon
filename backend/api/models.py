@@ -12,6 +12,7 @@ faker = Faker('en_US')
 class Content(models.Model):
 
     text = models.TextField('text')
+    uploader_id = models.BigIntegerField('uploader_id', default=0, blank=True)
     upload_date = models.DateField('upload date')
 
     def save(self, *args, **kwargs):

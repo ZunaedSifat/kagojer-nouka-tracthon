@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from datetime import datetime, timedelta, date
 
 from django.db.models import Count
@@ -57,3 +58,19 @@ def trending_keyword_history(request):
     words = list(Keyword.objects.filter(word=word).values('content__upload_date')
                  .annotate(count=Count('content__upload_date')).order_by('content__upload_date'))
     return Response(words)
+
+
+@api_view(http_method_names=['GET'])
+def trending_keyword_top(request):
+
+    count = request.GET.get('count', 5)
+
+    words = list(Keyword.objects.values('word').annotate(count=Count('word')).order_by('-count')[:int(count)])
+
+    results = OrderedDict()
+
+    for w in words:
+        results[w['word']] = list(Keyword.objects.filter(word=w['word']).values('content__upload_date')
+                          .annotate(count=Count('content__upload_date')).order_by('content__upload_date'))
+
+    return Response(results)
