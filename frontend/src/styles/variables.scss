@@ -1,2 +1,5 @@
 // navigation-drawer
 $navigation-drawer-border-width: 0px !default;
+// light theme
+$custom-bg-color: #eee;
+$material-light: ( 'background': $custom-bg-color, 'toolbar': $custom-bg-color);

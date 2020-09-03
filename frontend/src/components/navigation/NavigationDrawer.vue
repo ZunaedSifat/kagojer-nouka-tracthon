@@ -8,13 +8,13 @@
         v-bind="$attrs"
     >
         <template v-slot:img="props">
-            <v-img gradient="#b993d6, #8ca6db" v-bind="props" />
+            <v-img gradient="315deg, #7f5a83 0%, #0d324d 74%" v-bind="props" />
         </template>
 
         <v-divider class="mb-1" />
 
         <v-list dense nav>
-            <v-list-item to="/" exact>
+            <v-list-item to="/" exact exact-active-class="home-link">
                 <v-list-item-avatar color="purple">logo</v-list-item-avatar>
                 <v-list-item-content>
                     <v-list-item-title class="subtitle-1">Kagojer Nouka</v-list-item-title>
@@ -65,3 +65,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.home-link::before {
+    opacity: 0;
+}
+</style>
