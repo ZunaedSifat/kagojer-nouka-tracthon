@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('text', models.TextField(verbose_name='text')),
-                ('upload_datetime', models.DateTimeField(verbose_name='upload datetime')),
+                ('upload_date', models.DateTimeField(verbose_name='upload datetime')),
             ],
         ),
         migrations.CreateModel(

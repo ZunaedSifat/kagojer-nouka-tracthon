@@ -12,11 +12,11 @@ faker = Faker('en_US')
 class Content(models.Model):
 
     text = models.TextField('text')
-    upload_datetime = models.DateTimeField('upload datetime')
+    upload_date = models.DateField('upload date')
 
     def save(self, *args, **kwargs):
-        if not self.id and not self.upload_datetime:
-            self.upload_datetime = timezone.now()
+        if not self.id and not self.upload_date:
+            self.upload_date = timezone.now().date()
         return super().save(*args, **kwargs)
 
     @classmethod
@@ -25,7 +25,7 @@ class Content(models.Model):
             with transaction.atomic():
                 return cls.objects.create(
                     text=faker.paragraph(nb_sentences=30),
-                    upload_datetime=faker.past_datetime(tzinfo=timezone.get_current_timezone()),
+                    upload_date=faker.past_date(tzinfo=timezone.get_current_timezone()),
                 )
         except IntegrityError:
             return cls.generate_fake()
