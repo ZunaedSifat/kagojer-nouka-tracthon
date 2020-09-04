@@ -22,4 +22,5 @@ Contact with [ZunaedSifat](https://github.com/zunaedsifat) instead.
 1. Add Heroku repository `heroku git:remote -a kagojer-nouka`
 1. Rename the Heroku repository to `heroku-backend` by executing the command
 `git remote rename heroku heroku-backend`
-1. Push code to Heroku by executing from the project root `git subtree push --prefix backend heroku-backend master`
+1. Push code to backend server, execute `git subtree push --prefix backend heroku-backend master` from root folder of the repository
+1. Force push to backend server, execute ```git push heroku-backend `git subtree split --prefix backend master`:master --force```
