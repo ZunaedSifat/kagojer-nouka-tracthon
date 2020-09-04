@@ -1,10 +1,10 @@
 Kagojer Nouka
 =============
-Kagojer Nouka is a complete solution for local authorities to build
-relationship with their constituents and help them in any problem
-real time. This project is being developed for 
+Kagojer Nouka is a social media focused platform to combat fake news using
+big data and natural language processing. This project is being developed for 
 [tracthon](https://traction.robu-lab.org/) by team Kagojer Nouka. 
-You can visit the site here.
+View the project yourself
+* [Video Presentation](#)
 * [Front End Vue Application](https://kagojer-nouka-web.herokuapp.com/dashboard)
 * [Back End Django REST Application](https://kagojer-nouka.herokuapp.com/dashboard)
 
@@ -52,7 +52,7 @@ We’ll be able to provide authentic news to all demographics and mitigate socia
 
 Team Members
 ============
-1. [Tahmeed Tareq](https://github.com/tahmeed156)
+1. [Tahmeed Tarek](https://github.com/tahmeed156)
 2. [Priyeta Saha](https://github.com/prism97)
 3. [Khondokar Ashikur Rahman](https://github.com/ashiqursuperfly)
 4. [Md. Zunaed Karim](https://github.com/ZunaedSifat/)
