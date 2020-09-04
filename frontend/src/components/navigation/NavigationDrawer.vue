@@ -15,7 +15,9 @@
 
         <v-list dense nav>
             <v-list-item to="/" exact exact-active-class="home-link">
-                <v-list-item-avatar color="purple">logo</v-list-item-avatar>
+                <v-list-item-avatar color="purple">
+                    <v-icon size="30">$logo</v-icon>
+                </v-list-item-avatar>
                 <v-list-item-content>
                     <v-list-item-title class="subtitle-1">Kagojer Nouka</v-list-item-title>
                 </v-list-item-content>
@@ -44,6 +46,11 @@ export default {
                     icon: "$dashboard",
                     title: "Dashboard",
                     to: "/dashboard",
+                },
+                {
+                    icon: "$ad",
+                    title: "Ad Campaign",
+                    to: "/ad-campaign",
                 },
                 {
                     icon: "$profile",

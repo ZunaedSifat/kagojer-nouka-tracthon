@@ -2,7 +2,7 @@ const routes = [{
         path: "/",
         name: "Home",
         component: () =>
-            import ('@/views/Home.vue')
+            import ('@/views/Dashboard.vue')
     },
     {
         path: "/login",
@@ -27,6 +27,12 @@ const routes = [{
         props: true,
         component: () =>
             import ('@/views/Cluster.vue')
+    },
+    {
+        path: "/ad-campaign",
+        name: "Ad Campaign",
+        component: () =>
+            import ('@/views/Campaign.vue')
     },
     {
         path: "/profile",

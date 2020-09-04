@@ -30,7 +30,8 @@ const clusters = [{
                 date: `2020-09-02`
             },
             { text: `Every Conservative who participated in mail - in voting engaged in voter fraud.We are all guilty and must therefore absolve ourselves from this sin.The solution is to hold hostage USPS so that our fradulent behavior ceases immediately.I 100 % support Trump’ s voter suppression.`, date: `2020-09-03` }
-        ]
+        ],
+        media: ["facebook", "twitter", "youtube"]
     },
     {
         name: "Schools Reopening",
@@ -43,7 +44,8 @@ const clusters = [{
         ],
         flag: 172,
         article: 86,
-        articles: []
+        articles: [],
+        media: ["youtube"]
     },
     {
         name: "Sinha Case",
@@ -56,7 +58,8 @@ const clusters = [{
         ],
         flag: 223,
         article: 52,
-        articles: []
+        articles: [],
+        media: ["facebook"]
     },
     {
         name: "Messi Leaving",
@@ -69,7 +72,8 @@ const clusters = [{
         ],
         flag: 12,
         article: 120,
-        articles: []
+        articles: [],
+        media: ["twitter"]
     },
     {
         name: "Medium Blocked",
@@ -82,7 +86,8 @@ const clusters = [{
         ],
         flag: 157,
         article: 61,
-        articles: []
+        articles: [],
+        media: ["facebook", "twitter"]
     },
     {
         name: "India Flights",
@@ -95,7 +100,8 @@ const clusters = [{
         ],
         flag: 43,
         article: 77,
-        articles: []
+        articles: [],
+        media: ["facebook"]
     },
 ];
 

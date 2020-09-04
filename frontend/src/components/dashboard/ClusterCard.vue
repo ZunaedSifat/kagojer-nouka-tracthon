@@ -67,7 +67,6 @@ export default {
     },
     data() {
         return {
-            // keywords: ["Donald", "Trump", "Election", "Covid", "Corruption"],
             colors: ["primary", "secondary", "pink", "blue", "purple"],
         };
     },
