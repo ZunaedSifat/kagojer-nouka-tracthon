@@ -142,7 +142,7 @@ def get_keywords(text):
     return sorted_nouns + sorted_keywords
 
 
-# init_nltk()
+init_nltk()
 # get_keywords(read_file('input.txt'))
 
 

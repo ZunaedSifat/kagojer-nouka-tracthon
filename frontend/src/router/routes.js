@@ -17,6 +17,18 @@ const routes = [{
             import ('@/views/Dashboard.vue')
     },
     {
+        path: "/keywords/:word",
+        props: true,
+        component: () =>
+            import ('@/views/Keyword.vue')
+    },
+    {
+        path: "/clusters/:cluster",
+        props: true,
+        component: () =>
+            import ('@/views/Cluster.vue')
+    },
+    {
         path: "/profile",
         name: "Profile",
         component: () =>
