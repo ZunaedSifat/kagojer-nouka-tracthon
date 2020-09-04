@@ -4,7 +4,7 @@ Kagojer Nouka is a social media focused platform to combat fake news using
 big data and natural language processing. This project is being developed for 
 [tracthon](https://traction.robu-lab.org/) by team Kagojer Nouka. 
 View the project yourself
-* [Video Presentation](#)
+* [Video Presentation](https://drive.google.com/file/d/168E_01ufxo-k_OuAeQH5EF7cbhZ6dej5/view?usp=drivesdk)
 * [Front End Vue Application](https://kagojer-nouka-web.herokuapp.com/dashboard)
 * [Back End Django REST Application](https://kagojer-nouka.herokuapp.com/dashboard)
 
@@ -56,8 +56,3 @@ Team Members
 2. [Priyeta Saha](https://github.com/prism97)
 3. [Khondokar Ashikur Rahman](https://github.com/ashiqursuperfly)
 4. [Md. Zunaed Karim](https://github.com/ZunaedSifat/)
-
-Push code to heroku server
-==========================
-* For backend server, execute `git subtree push --prefix backend heroku-backend master` from root folder of the repository
-* To force push to backend server, execute ```git push heroku-backend `git subtree split --prefix backend master`:master --force```
